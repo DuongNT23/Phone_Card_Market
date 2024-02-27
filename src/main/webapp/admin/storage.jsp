@@ -188,7 +188,7 @@
                     </a>
                 </li>
                 <li>
-                    <a class="nav-link" href="users">
+                    <a class="nav-link" href="user">
                         <i class="nc-icon nc-circle-09"></i>
                         <p>Người dùng</p>
                     </a>
@@ -225,13 +225,13 @@
                             <li class="nav-item" style="margin-left: 20px">
                                 <input id="searchInput" type="text" name="search" placeholder="Tìm tên sản phẩm"
                                        class="h-100 border-0"
-                                       >
+                                >
                             </li>
                         </ul>
                     </form>
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="logout">
+                            <a class="nav-link" href="login">
                                 <span class="no-icon">Đăng xuất</span>
                             </a>
                         </li>
@@ -245,10 +245,6 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card strpied-tabled-with-hover">
-                            <div class="card-header ">
-                                <h4 class="card-title">Striped Table with Hover</h4>
-                                <p class="card-category">Here is a subtitle for this table</p>
-                            </div>
                             <div class="card-body table-full-width table-responsive">
                                 <table class="table table-hover table-striped">
                                     <thead>
@@ -339,7 +335,7 @@
 
 <script type="text/javascript">
 
-    $(document).ready( function (){
+    $(document).ready(function () {
         $.ajax({
             url: "api/v1/storage",
             type: "GET",
@@ -422,6 +418,7 @@
                 .text(parseInt(product).toLocaleString()));
         });
     }
+
     function loadListSupplier(data) {
         var listProduct = JSON.parse(data);
         $.each(listProduct, function (i, supplier) {
@@ -469,10 +466,10 @@
     });
     $('#supplierSelect').change(() => {
         getData(1);
-    })
+    });
     $('#searchInput').on('input', () => {
         getData(1);
-    })
+    });
 
     // Convert price below format 1,000
     var priceStorage = document.querySelectorAll(".price_storage");

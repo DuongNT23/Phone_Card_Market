@@ -152,26 +152,19 @@
                 <div class="header1">
                     <ul>
                         <li><a href="/">Trang chủ</a></li>
-                        <li><a href="#">Mua hàng</a>
-                            <ul>
-                                <li><a href="${(user != null ) ? "order" : "login"}">Đơn hàng</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Giao dịch</a>
-                            <ul>
-                                <li><a href="${(user != null ) ? "transaction" : "login"}">Lịch sử</a></li>
-                            </ul>
-                        </li>
+                        <li><a href="${(user != null ) ? "order" : "login"}">Đơn hàng</a></li>
+                        <li><a href="${(user != null ) ? "transaction" : "login"}">Giao dịch</a></li>
                         <li><a href="contact.jsp">Liên hệ</a></li>
-                        <li><a href="#"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                        <li><a href="${(user != null ) ? "rechange" : "login"}">Nạp tiền</a></li>
                         <c:if test="${user != null}">
-                            <li><span style="color: #ffffff;font-size: 20px;line-height: 60px">Số dư: <span id="balanceValue">${user.getBalance()}</span></span></li>
+                            <li><span style="color: #ffffff;font-size: 20px;line-height: 60px">Số dư: <span
+                                    id="balanceValue">${user.getBalance()}</span></span></li>
                         </c:if>
                         <c:if test="${user != null}">
                             <li><a href="#"><i class="fa-solid fa-circle-user"></i></a>
                                 <ul>
                                     <li><a href="changeProfile">Thông tin người dùng</a></li>
-                                    <li><a href="logout">Đăng xuất</a></li>
+                                    <li><a href="login">Đăng xuất</a></li>
                                 </ul>
                             </li>
                         </c:if>
@@ -186,7 +179,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg col-sm-" color-on-scroll="100">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/"> HOME 🌐  </a>
+            <a class="navbar-brand" href="/"> HOME 🌐 </a>
             <div class="collapse navbar-collapse justify-content-end" id="navigation">
                 <form method="get" action="order">
                     <ul class="nav navbar-nav mr-auto">
@@ -200,16 +193,6 @@
                                 </c:forEach>
                             </select>
                         </li>
-                        <%--                            <li class="nav-item dropdown" style="margin-left: 10px">--%>
-                        <%--                                <select name="id" class="h-100 border-0"--%>
-                        <%--                                        style="background-color: transparent;color: #5e5e5e;cursor: pointer">--%>
-                        <%--                                    <option value="all">Mã đơn hàng</option>--%>
-                        <%--                                    <c:forEach var="order" items="${listOrder}">--%>
-                        <%--                                        <option class="dropdown-item" ${String.valueOf(order.getId()).equals(param.id) ? "selected" : ""}--%>
-                        <%--                                                value="${order.getId()}">${order.getId()}</option>--%>
-                        <%--                                    </c:forEach>--%>
-                        <%--                                </select>--%>
-                        <%--                            </li>--%>
                         <li class="nav-item" style="margin-left: 10px">
                             <input type="text" id="searchInput" name="search" placeholder="Tìm kiếm "
                                    class="h-50 border-0"
@@ -223,7 +206,7 @@
                 </form>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="logout">
+                        <a class="nav-link" href="login">
                             <span class="no-icon">Log out</span>
                         </a>
                     </li>
@@ -233,9 +216,7 @@
     </nav>
     <!-- End Navbar -->
     <div class="content">
-
         <div class="container-fluid">
-
             <div class="row">
                 <div class=" col-md-12">
                     <div class="card strpied-tabled-with-hover">
@@ -253,7 +234,7 @@
                                 <th>Số tiền</th>
                                 <th>Tổng thanh toán</th>
                                 <th>Thời gian tạo đơn hàng</th>
-                                <th>Người bán</th>
+<%--                                <th>Người bán</th>--%>
                                 <th>Hành động</th>
                                 </thead>
                                 <tbody>
@@ -290,10 +271,10 @@
                                             </c:if>
                                         </c:forEach>
                                         <td>${order.getStatus()}</td>
-                                        <td>${order.getTotalAmount()}</td>
-                                        <td>${order.getTotalAmount() * quantity}</td>
+                                        <td class="price_order">${order.getTotalAmount()}</td>
+                                        <td class="price_order">${order.getTotalAmount() * quantity}</td>
                                         <td>${order.getCreatedAt()}</td>
-                                        <td>${order.getCreatedBy().getAccount()}</td>
+<%--                                        <td>${order.getCreatedBy().getAccount()}</td>--%>
                                         <td>
                                             <button class="btn"
                                                     style="background-color: #6188e2;color: #ffffff;cursor: pointer;"
@@ -465,6 +446,11 @@
         document.getElementById('pagination').innerHTML = str;
         return str;
     }
+    // Convert price below format 1,000
+    var priceStorage = document.querySelectorAll(".price_order");
+    priceStorage.forEach(p => {
+        p.innerText = parseInt(p.innerText).toLocaleString();
+    });
 
 </script>
 </html>

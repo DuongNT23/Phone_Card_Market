@@ -1,5 +1,6 @@
 package controller;
 
+import dal.DAO;
 import functionUtils.Function;
 import dal.UserDAO;
 import jakarta.servlet.ServletException;
@@ -49,12 +50,11 @@ public class ActiveAccount extends HttpServlet {
             if (captchaValue.equals(captchaInput)) {
                 if (tokenValue != null && (!tokenValue.isEmpty()) && tokenValue.equals(tokenInput)) {
                     user.setActive(true);
-                    UserDAO ud = new UserDAO();
-                    ud.update(user, user.getId());
+                    int userId = DAO.userDAO.update(user, user.getId());
                     session.removeAttribute("captchaValue");
                     session.removeAttribute("optValue");
-                    session.setAttribute("user", user);
-                    response.sendRedirect("home");
+                    session.setAttribute("user", DAO.userDAO.getUserById(userId));
+                    response.sendRedirect("/");
                 } else {
                     String tokenMessageErr = "Token is not correct! Please check again!";
                     request.setAttribute("tokenMessageErr", tokenMessageErr);
@@ -66,7 +66,22 @@ public class ActiveAccount extends HttpServlet {
                 request.getRequestDispatcher("activeAccount.jsp").forward(request, response);
             }
         } else {
-            doGet(request, response);
+            session.removeAttribute("optValue");
+            Function f = new Function();
+            String token = (String) session.getAttribute("optValue");
+            if (token == null || token.isEmpty()) {
+                token = f.tokenGenerate();
+                String newTokenValue = token;
+                Thread thread = new Thread() {
+                    @Override
+                    public void run() {
+                        f.authenEmail(user.getEmail(), newTokenValue);
+                    }
+                };
+                thread.start();
+                session.setAttribute("optValue", newTokenValue);
+            }
+            request.getRequestDispatcher("activeAccount.jsp").forward(request, response);
         }
     }
 }

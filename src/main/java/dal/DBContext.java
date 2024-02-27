@@ -20,6 +20,7 @@ public class DBContext {
                 System.out.println(e.getMessage());
             }
         }
+        System.out.println("connect success");
         return connection;
     }
     public DBContext() {

@@ -25,7 +25,7 @@
                         <li><a href="${(user != null ) ? "order" : "login"}">Đơn hàng</a></li>
                         <li><a href="${(user != null ) ? "transaction" : "login"}">Giao dịch</a></li>
                         <li><a href="contact.jsp">Liên hệ</a></li>
-                        <li><a href="#"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                        <li><a href="${(user != null ) ? "rechange" : "login"}">Nạp tiền</a></li>
                         <c:if test="${user != null}">
                             <li><span
                                     style="color: #ffffff;font-size: 20px;line-height: 60px">Số dư: ${user.getBalance()}</span>
@@ -35,7 +35,7 @@
                             <li><a href="#"><i class="fa-solid fa-circle-user"></i></a>
                                 <ul>
                                     <li><a href="changeProfile">Thông tin người dùng</a></li>
-                                    <li><a href="logout">Đăng xuất</a></li>
+                                    <li><a href="login">Đăng xuất</a></li>
                                 </ul>
                             </li>
                         </c:if>

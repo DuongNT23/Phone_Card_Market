@@ -6,14 +6,11 @@ import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
 
-@WebServlet(name = "LogoutController", value = "/logout")
-public class LogoutController extends HttpServlet {
+@WebServlet(name = "RechageController", urlPatterns = "/rechange")
+public class RechageController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        session.removeAttribute("user");
-        session.removeAttribute("isAdmin");
-        response.sendRedirect("login");
+        request.getRequestDispatcher("rechange.jsp").forward(request, response);
     }
 
     @Override

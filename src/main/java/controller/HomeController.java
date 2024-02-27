@@ -4,6 +4,8 @@
  */
 package controller;
 
+import com.google.gson.Gson;
+import dal.DAO;
 import dal.SupplierDAO;
 import dal.UserDAO;
 import jakarta.servlet.ServletException;
@@ -12,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.Product;
 import model.Supplier;
 import model.User;
 
@@ -66,23 +69,24 @@ public class HomeController extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         User u = (User) session.getAttribute("user");
-        if (u != null) {
-            User user = new UserDAO().getUser(u.getAccount(), u.getPassword());
-            session.setAttribute("user", user);
-        }
+        Gson gson = new Gson();
 
-        if (session.getAttribute("imgList") == null) {
-            ArrayList<Supplier> list = new ArrayList<>();
-            list = (new SupplierDAO()).getListSupplier();
-            session.setAttribute("imgList", list);
-        }
         boolean isAdmin = false;
         if (session.getAttribute("isAdmin") != null) {
             isAdmin = (boolean) session.getAttribute("isAdmin");
         }
+        if (u != null) {
+            User user = DAO.userDAO.getUserById(u.getId());
+            session.setAttribute("user", user);
+        }
         if (isAdmin) {
-            request.getRequestDispatcher("admin/dashboard.jsp").forward(request, response);
+            request.getRequestDispatcher("/admin/dashboard.jsp").forward(request, response);
         } else {
+            ArrayList<Supplier> listSupplier = DAO.supplierDAO.getListSupplier();
+            ArrayList<Product> listProduct = DAO.productDAO.getListProductBySupplier(1);
+
+            request.setAttribute("listSupplier" , gson.toJson(listSupplier));
+            request.setAttribute("listProduct" , gson.toJson(listProduct));
             request.getRequestDispatcher("home.jsp").forward(request, response);
         }
     }
@@ -100,12 +104,6 @@ public class HomeController extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
-    @Override
-    public void destroy() {
-        super.destroy();
-    }
-
     /**
      * Returns a short description of the servlet.
      *

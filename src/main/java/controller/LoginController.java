@@ -63,6 +63,9 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        session.removeAttribute("isAdmin");
+        session.removeAttribute("user");
         request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
@@ -111,8 +114,8 @@ public class LoginController extends HttpServlet {
                 session.setAttribute("isAdmin", false);
             }
             session.setAttribute("user", user);
-
-            response.sendRedirect("home");
+            session.removeAttribute("captchaValue");
+            response.sendRedirect("/");
         }
     }
 

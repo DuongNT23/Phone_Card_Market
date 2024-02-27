@@ -28,9 +28,9 @@ public class OrderController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
 
-        if (session.getAttribute("isAdmin") != null) {
+        if (session.getAttribute("user") != null) {
             boolean isAdmin = false;
-            isAdmin = (boolean) session.getAttribute("isAdmin");
+            isAdmin = (session.getAttribute("isAdmin") != null ? ((boolean) session.getAttribute("isAdmin")) : false);
             //Information
             if (isAdmin) {
                 String page_raw = request.getParameter("page");
@@ -55,8 +55,8 @@ public class OrderController extends HttpServlet {
                 }
 
                 //list distinct status
-                List<String> listStatus = new ArrayList<>();
-                listStatus = DAO.orderDAO.getDistinctStatus();
+                List<String> listStatus = DAO.orderDAO.getDistinctStatus();
+//                listStatus = DAO.orderDAO.getDistinctStatus();
                 //getAllOrder
                 list = DAO.orderDAO.getAllOrder(status, search, (page - 1) * 10);
                 long totalOrder = DAO.orderDAO.totalOrder(status, search);
@@ -68,7 +68,9 @@ public class OrderController extends HttpServlet {
 //
                 request.getRequestDispatcher("admin/order.jsp").forward(request, response);
             } else {
-                User user = (User) session.getAttribute("user");
+                User u = (User) session.getAttribute("user");
+                User user = DAO.userDAO.getUserById(u.getId());
+                session.setAttribute("user", user);
                 String page_raw = request.getParameter("page");
                 String status_raw = request.getParameter("status");
                 String search_raw = request.getParameter("search");
@@ -96,7 +98,7 @@ public class OrderController extends HttpServlet {
                 //getAllOrder
 
                 list = DAO.orderDAO.getAllOrderWithUser(status, search, (page - 1) * 10,user.getId());
-                long totalOrder = DAO.orderDAO.totalOrder(status, search);
+                long totalOrder = DAO.orderDAO.totalOrderByUser(status, search, user.getId());
                 double totalPage = (double) totalOrder / 10;
                 request.setAttribute("totalPageNumbers", Math.ceil(totalPage));
                 request.setAttribute("pageNumber", page);
@@ -105,7 +107,7 @@ public class OrderController extends HttpServlet {
                 request.getRequestDispatcher("order.jsp").forward(request, response);
             }
         } else {
-            response.sendRedirect("logout");
+            response.sendRedirect("login");
         }
 
 

@@ -74,21 +74,21 @@ The above copyright notice and this permission notice shall be included in all c
                     </a>
                 </li>
                 <li>
-                    <a class="nav-link" href="icons.jsp">
+                    <a class="nav-link" href="/products">
                         <i class="nc-icon nc-atom"></i>
-                        <p>Icons</p>
+                        <p>Sản phẩm</p>
                     </a>
                 </li>
                 <li>
-                    <a class="nav-link" href="maps.jsp">
-                        <i class="nc-icon nc-pin-3"></i>
-                        <p>Maps</p>
+                    <a class="nav-link" href="/user">
+                        <i class="nc-icon nc-circle-09"></i>
+                        <p>Người dùng</p>
                     </a>
                 </li>
                 <li>
-                    <a class="nav-link" href="./notifications.jsp">
+                    <a class="nav-link" href="/transaction">
                         <i class="nc-icon nc-bell-55"></i>
-                        <p>Notifications</p>
+                        <p>Giao dịch</p>
                     </a>
                 </li>
                 <li class="nav-item active active-pro">
@@ -108,7 +108,7 @@ The above copyright notice and this permission notice shall be included in all c
                 <div class="collapse navbar-collapse justify-content-end" id="navigation">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="logout">
+                            <a class="nav-link" href="login">
                                 <span class="no-icon">Đăng xuất</span>
                             </a>
                         </li>
